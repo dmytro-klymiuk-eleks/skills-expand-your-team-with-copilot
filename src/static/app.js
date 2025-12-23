@@ -34,6 +34,9 @@ document.addEventListener("DOMContentLoaded", () => {
     technology: { label: "Technology", color: "#e8eaf6", textColor: "#3949ab" },
   };
 
+  // Configuration constants
+  const SCHOOL_NAME = "Mergington High School";
+
   // State for activities and filters
   let allActivities = {};
   let currentFilter = "all";
@@ -659,15 +662,6 @@ document.addEventListener("DOMContentLoaded", () => {
     activitiesList.appendChild(activityCard);
   }
 
-  // Close share options when clicking outside
-  document.addEventListener("click", (e) => {
-    if (!e.target.closest(".share-button") && !e.target.closest(".share-options")) {
-      document.querySelectorAll(".share-options").forEach((opt) => {
-        opt.classList.remove("show");
-      });
-    }
-  });
-
   // Share on Facebook
   function shareOnFacebook(activityName, details) {
     const url = encodeURIComponent(window.location.href);
@@ -679,7 +673,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Share on Twitter
   function shareOnTwitter(activityName, details) {
     const text = encodeURIComponent(
-      `Check out ${activityName} at Mergington High School! ${details.description}`
+      `Check out ${activityName} at ${SCHOOL_NAME}! ${details.description}`
     );
     const url = encodeURIComponent(window.location.href);
     const shareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
@@ -690,7 +684,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Share via Email
   function shareViaEmail(activityName, details) {
     const subject = encodeURIComponent(
-      `Check out ${activityName} at Mergington High School`
+      `Check out ${activityName} at ${SCHOOL_NAME}`
     );
     const body = encodeURIComponent(
       `I thought you might be interested in this activity:\n\n${activityName}\n\n${details.description}\n\nSchedule: ${formatSchedule(details)}\n\nLearn more at: ${window.location.href}`
@@ -706,20 +700,8 @@ document.addEventListener("DOMContentLoaded", () => {
       await navigator.clipboard.writeText(url);
       showShareMessage("Link copied to clipboard!");
     } catch (err) {
-      // Fallback for browsers that don't support clipboard API
-      const textArea = document.createElement("textarea");
-      textArea.value = url;
-      textArea.style.position = "fixed";
-      textArea.style.left = "-999999px";
-      document.body.appendChild(textArea);
-      textArea.select();
-      try {
-        document.execCommand("copy");
-        showShareMessage("Link copied to clipboard!");
-      } catch (err) {
-        showShareMessage("Failed to copy link", "error");
-      }
-      document.body.removeChild(textArea);
+      // Fallback for older browsers - show manual copy instruction
+      showShareMessage("Could not copy automatically. Please copy the URL manually.", "error");
     }
   }
 
@@ -744,6 +726,15 @@ document.addEventListener("DOMContentLoaded", () => {
       message.remove();
     }, 3000);
   }
+
+  // Close share options when clicking outside (only set up once)
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".share-button") && !e.target.closest(".share-options")) {
+      document.querySelectorAll(".share-options").forEach((opt) => {
+        opt.classList.remove("show");
+      });
+    }
+  });
 
   // Event listeners for search and filter
   searchInput.addEventListener("input", (event) => {
