@@ -5,7 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const html = document.documentElement;
 
   // Check for saved theme preference or default to light mode
-  const currentTheme = localStorage.getItem("theme") || "light";
+  const savedTheme = localStorage.getItem("theme");
+  const currentTheme = (savedTheme === "light" || savedTheme === "dark") ? savedTheme : "light";
   html.setAttribute("data-theme", currentTheme);
   updateThemeIcon(currentTheme);
 
