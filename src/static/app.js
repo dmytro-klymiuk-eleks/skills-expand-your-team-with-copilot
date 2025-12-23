@@ -1,4 +1,33 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // Theme management
+  const themeToggle = document.getElementById("theme-toggle");
+  const themeIcon = document.getElementById("theme-icon");
+  const html = document.documentElement;
+
+  // Check for saved theme preference or default to light mode
+  const savedTheme = localStorage.getItem("theme");
+  const currentTheme = (savedTheme === "light" || savedTheme === "dark") ? savedTheme : "light";
+  html.setAttribute("data-theme", currentTheme);
+  updateThemeIcon(currentTheme);
+
+  // Theme toggle function
+  function toggleTheme() {
+    const currentTheme = html.getAttribute("data-theme");
+    const newTheme = currentTheme === "light" ? "dark" : "light";
+    
+    html.setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+    updateThemeIcon(newTheme);
+  }
+
+  // Update theme icon based on current theme
+  function updateThemeIcon(theme) {
+    themeIcon.textContent = theme === "light" ? "🌙" : "☀️";
+  }
+
+  // Event listener for theme toggle
+  themeToggle.addEventListener("click", toggleTheme);
+
   // DOM elements
   const activitiesList = document.getElementById("activities-list");
   const messageDiv = document.getElementById("message");
